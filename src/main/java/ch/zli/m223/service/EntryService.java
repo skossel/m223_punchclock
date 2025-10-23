@@ -24,4 +24,17 @@ public class EntryService {
         var query = entityManager.createQuery("FROM Entry", Entry.class);
         return query.getResultList();
     }
+
+    @Transactional
+    public boolean deleteEntry(Long id) {
+        Entry managed = entityManager.find(Entry.class, id);
+        if (managed == null) {
+            return false;
+        }
+        entityManager.remove(managed);
+        return true;
+    }
+
+
+
 }

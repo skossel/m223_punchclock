@@ -1,14 +1,18 @@
 package ch.zli.m223.controller;
 
+import java.io.ObjectInputFilter.Status;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
@@ -37,5 +41,18 @@ public class EntryController {
     public Entry create(Entry entry) {
        return entryService.createEntry(entry);
     }
+
+    @DELETE
+    @Path("/{id}")
+    @Operation(summary = "Deletes an entry.", description = "Deletes an entry by its ID.")
+    public String delete(@PathParam("id") Long id) {
+        boolean deleted = entryService.deleteEntry(id);
+        if (deleted) {
+            return "Entry with id " + id + " deleted successfully.";
+        } else {
+            return "Entry with id " + id + " not found.";
+        }
+    }
+
 
 }
