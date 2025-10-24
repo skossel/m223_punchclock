@@ -4,10 +4,12 @@ import java.io.ObjectInputFilter.Status;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.print.attribute.standard.Media;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -44,14 +46,15 @@ public class EntryController {
 
     @DELETE
     @Path("/{id}")
-    @Operation(summary = "Deletes an entry.", description = "Deletes an entry by its ID.")
-    public String delete(@PathParam("id") Long id) {
-        boolean deleted = entryService.deleteEntry(id);
-        if (deleted) {
-            return "Entry with id " + id + " deleted successfully.";
-        } else {
-            return "Entry with id " + id + " not found.";
-        }
+    public void delete(@PathParam("id") Long id) {
+        entryService.deleteEntry(id);
+    }
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Entry update(Entry entry) {
+        return entryService.updateEntry(entry);
     }
 
 
